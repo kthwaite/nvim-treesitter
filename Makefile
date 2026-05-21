@@ -127,6 +127,10 @@ tests: $(NVIM) $(HLASSERT) $(PLENTEST)
 		$(NVIM_BIN) --headless --clean -u scripts/minimal_init.lua \
 		-c "lua require('plentest').test_directory('tests/$(TESTS)', { minimal_init = './scripts/minimal_init.lua' })"
 
+.PHONY: test-async
+test-async:
+	nvim -l scripts/test-async.lua
+
 .PHONY: all
 all: lua query tests
 
