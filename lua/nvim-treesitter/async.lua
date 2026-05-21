@@ -40,19 +40,32 @@ function Task:await(callback)
   end
 end
 
---- Block until the task finishes, pumping the event loop. Raises on error.
+--- Block until the task finishes, pumping the event loop (protected variant).
+--- Returns `(false, err)` on failure or timeout, `(true, ...results)` on success.
 ---@param timeout? integer milliseconds (default: effectively indefinite)
----@return any ... the task's return values
-function Task:wait(timeout)
+---@return boolean ok
+---@return any ... results on success, or the error / 'timeout' on failure
+function Task:pwait(timeout)
   local done = vim.wait(timeout or (2 ^ 31 - 1), function()
     return self._done
   end)
   if not done then
-    error('nvim-treesitter.async: task timed out')
+    return false, 'timeout'
   elseif self._failed then
-    error(self._err)
+    return false, self._err
   end
-  return unpack_n(self._result)
+  return true, unpack_n(self._result)
+end
+
+--- Block until the task finishes, pumping the event loop. Raises on error.
+---@param timeout? integer milliseconds (default: effectively indefinite)
+---@return any ... the task's return values
+function Task:wait(timeout)
+  local res = pack(self:pwait(timeout))
+  if not res[1] then
+    error(res[2])
+  end
+  return unpack(res, 2, res.n)
 end
 
 ---@private
