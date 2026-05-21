@@ -122,7 +122,7 @@ function M.check()
   install_health()
 
   -- Parser installation checks
-  health.start('Installed languages' .. string.rep(' ', 5) .. 'H L F I J')
+  health.start('Installed languages' .. string.rep(' ', 5) .. 'H L F J')
   local languages = config.get_installed()
   table.sort(languages)
   for _, lang in ipairs(languages) do
@@ -146,7 +146,7 @@ function M.check()
     end
     health.info(vim.fn.trim(out, ' ', 2))
   end
-  health.start('  Legend: [H]ighlights, [L]ocals, [F]olds, [I]ndents, In[J]ections')
+  health.start('  Legend: [H]ighlights, [L]ocals, [F]olds, In[J]ections')
 
   if #error_collection > 0 then
     health.start('The following errors have been detected in query files:')
@@ -169,6 +169,6 @@ function M.check()
   end
 end
 
-M.bundled_queries = { 'highlights', 'locals', 'folds', 'indents', 'injections' }
+M.bundled_queries = { 'highlights', 'locals', 'folds', 'injections' }
 
 return M

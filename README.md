@@ -100,16 +100,6 @@ vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.wo[0][0].foldmethod = 'expr'
 ```
 
-## Indentation
-
-Treesitter-based indentation is provided by this plugin but considered **experimental**. To enable it, put the following in your `ftplugin` or `FileType` autocommand:
-
-```lua
-vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-```
-
-(Note the specific quotes used.)
-
 ## Injections
 
 Injections are used for multi-language documents, see `:h treesitter-language-injections`. No setup is needed.

@@ -14,8 +14,7 @@ Authors:
 INTRODUCTION                                             *nvim-treesitter-intro*
 
 Nvim-treesitter provides functionalities for managing treesitter parsers and
-compatible queries for core features (highlighting, injections, folds,
-indents).
+compatible queries for core features (highlighting, injections, folds).
 
 ==============================================================================
 QUICK START                                         *nvim-treesitter-quickstart*
@@ -46,8 +45,6 @@ Treesitter features for installed languages need to be enabled manually in a
       -- folds, provided by Neovim
       vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
       vim.wo.foldmethod = 'expr'
-      -- indentation, provided by nvim-treesitter
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
     end,
   })
 <
@@ -159,11 +156,6 @@ update([{languages}, {opts}])                         *nvim-treesitter.update()*
                    • {summary} (`boolean?`, default `false`) print summary of
                      successful and total operations for multiple languages.
 
-indentexpr()                                      *nvim-treesitter.indentexpr()*
-
-    Used to enable treesitter indentation for a language via >lua
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-<
 get_available([{tier}])                        *nvim-treesitter.get_available()*
 
     Return list of languages available for installation.
