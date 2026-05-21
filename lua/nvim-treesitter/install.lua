@@ -543,7 +543,7 @@ end
 ---@param options? InstallOptions
 M.install = a.async(function(languages, options)
   reload_parsers()
-  languages = config.norm_languages(languages, { unsupported = true })
+  languages = config.norm_languages(languages)
   return install(languages, options)
 end)
 
@@ -555,7 +555,7 @@ M.update = a.async(function(languages, options)
   if not languages or #languages == 0 then
     languages = 'all'
   end
-  languages = config.norm_languages(languages, { missing = true, unsupported = true })
+  languages = config.norm_languages(languages, { missing = true })
   languages = vim.tbl_filter(needs_update, languages) ---@type string[]
 
   local summary = options and options.summary

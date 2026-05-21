@@ -54,7 +54,7 @@ COMMANDS                                              *nvim-treesitter-commands*
 :TSInstall {language}                                               *:TSInstall*
 
 Install one or more treesitter parsers. {language} can be one or multiple
-parsers or tiers (`stable`, `unstable`, or `all` (not recommended)). This is a
+parsers, or `all` (not recommended). This is a
 no-op if the parser(s) are already installed. Installation is performed
 asynchronously. Use *:TSInstall!* to force installation even if a parser is
 already installed.
@@ -69,7 +69,7 @@ uses a no longer supported ABI).
 
 Update parsers to the `revision` specified in the manifest if this is newer
 than the installed version. If {language} is specified, update the
-corresponding parser or tier; otherwise update all installed parsers. This is
+corresponding parser; otherwise update all installed parsers. This is
 a no-op if all (specified) parsers are up to date.
 
 Note: It is recommended to add this command as a build step in your plugin
@@ -113,8 +113,7 @@ install({languages} [, {opts}])                      *nvim-treesitter.install()*
                                   :wait(300000) -- max. 5 minutes
 <
     Parameters: ~
-    • {languages}  `(string[]|string)` (List of) languages or tiers (`stable`,
-                   `unstable`) to install.
+    • {languages}  `(string[]|string)` (List of) languages to install.
     • {opts}       `(table?)` Optional parameters:
                    • {force} (`boolean?`, default `false`) force installation
                      of already installed parsers
@@ -131,8 +130,7 @@ uninstall({languages} [, {opts}])                  *nvim-treesitter.uninstall()*
     Remove the parser and queries for the specified language(s).
 
     Parameters: ~
-    • {languages}  `(string[]|string)` (List of) languages or tiers (`stable`,
-                   `unstable`) to update.
+    • {languages}  `(string[]|string)` (List of) languages to remove.
     • {opts}       `(table?)` Optional parameters:
                    • {summary} (`boolean?`, default `false`) print summary of
                      successful and total operations for multiple languages.
@@ -148,7 +146,7 @@ update([{languages}, {opts}])                         *nvim-treesitter.update()*
         require('nvim-treesitter').update():wait(300000) -- max. 5 minutes
 <
     Parameters: ~
-    • {languages}  `(string[]|string)?` (List of) languages or tiers to update
+    • {languages}  `(string[]|string)?` (List of) languages to update
                    (default: all installed).
     • {opts}       `(table?)` Optional parameters:
                    • {max_jobs} (`integer?`) limit parallel tasks (useful in
@@ -156,13 +154,9 @@ update([{languages}, {opts}])                         *nvim-treesitter.update()*
                    • {summary} (`boolean?`, default `false`) print summary of
                      successful and total operations for multiple languages.
 
-get_available([{tier}])                        *nvim-treesitter.get_available()*
+get_available()                                *nvim-treesitter.get_available()*
 
     Return list of languages available for installation.
-
-    Parameters: ~
-    • {tier}  `(integer?)` Only return languages of specified {tier} (`1`:
-              stable, `2`: unstable, `3`: unmaintained, `4`: unsupported)
 
 get_installed([{type}])                        *nvim-treesitter.get_installed()*
 

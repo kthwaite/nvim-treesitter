@@ -1,7 +1,5 @@
 local M = {}
 
-M.tiers = { 'stable', 'unstable', 'unmaintained', 'unsupported' }
-
 ---@class TSConfig
 ---@field install_dir string
 
@@ -57,46 +55,19 @@ function M.get_installed(type)
 end
 
 -- Get a list of all available parsers
----@param tier integer? only get parsers of specified tier
 ---@return string[]
-function M.get_available(tier)
+function M.get_available()
   vim.api.nvim_exec_autocmds('User', { pattern = 'TSUpdate' })
   local parsers = require('nvim-treesitter.parsers')
   --- @type string[]
   local languages = vim.tbl_keys(parsers)
   table.sort(languages)
-  if tier then
-    languages = vim.tbl_filter(
-      --- @param p string
-      function(p)
-        return parsers[p] ~= nil and parsers[p].tier == tier
-      end,
-      languages
-    )
-  end
   return languages
-end
-
-local function expand_tiers(list)
-  for i, tier in ipairs(M.tiers) do
-    if vim.list_contains(list, tier) then
-      list = vim.tbl_filter(
-        --- @param l string
-        function(l)
-          return l ~= tier
-        end,
-        list
-      )
-      vim.list_extend(list, M.get_available(i))
-    end
-  end
-
-  return list
 end
 
 ---Normalize languages
 ---@param languages? string[]|string
----@param skip? { missing: boolean?, unsupported: boolean?, installed: boolean?, dependencies: boolean? }
+---@param skip? { missing: boolean?, dependencies: boolean? }
 ---@return string[]
 function M.norm_languages(languages, skip)
   if not languages then
@@ -110,19 +81,6 @@ function M.norm_languages(languages, skip)
       return M.get_installed()
     end
     languages = M.get_available()
-  end
-
-  languages = expand_tiers(languages)
-
-  if skip and skip.installed then
-    local installed = M.get_installed()
-    languages = vim.tbl_filter(
-      --- @param v string
-      function(v)
-        return not vim.list_contains(installed, v)
-      end,
-      languages
-    )
   end
 
   if skip and skip.missing then
@@ -149,16 +107,6 @@ function M.norm_languages(languages, skip)
     end,
     languages
   )
-
-  if skip and skip.unsupported then
-    languages = vim.tbl_filter(
-      --- @param v string
-      function(v)
-        return not (parsers[v] and parsers[v].tier and parsers[v].tier == 4)
-      end,
-      languages
-    )
-  end
 
   if not (skip and skip.dependencies) then
     for _, lang in pairs(languages) do

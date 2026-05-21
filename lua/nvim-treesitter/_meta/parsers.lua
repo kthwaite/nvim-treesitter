@@ -32,16 +32,11 @@ error('Cannot require a meta file')
 ---Information necessary to build and install the parser (empty for query-only language)
 ---@field install_info? InstallInfo
 ---
----List of Github users maintaining the queries for Neovim
----@field maintainers? string[]
----
 ---List of other languages to install (e.g., if queries inherit from them)
 ---@field requires? string[]
 ---
----Language support tier, maps to "stable", "unstable", "unmaintained", "unsupported"
+---Language support tier; read by scripts/update-parsers.lua (1=stable uses
+---latest tag, others track HEAD)
 ---@field tier integer
----
----Explanatory footnote text to add in SUPPORTED_LANGUAGES.md
----@field readme_note? string
 
 ---@alias nvim-ts.parsers table<string,ParserInfo>
