@@ -325,8 +325,12 @@ local function do_install(logger, compile_location, target_location)
   logger:info(string.format('Installing parser'))
 
   local tempfile = target_location .. tostring(uv.hrtime())
-  uv_rename(target_location, tempfile) -- parser may be in use: rename...
-  uv_unlink(tempfile) -- ...and mark for garbage collection
+  -- Parser may be loaded/in use: rename it aside, then mark for GC. On a
+  -- first install the target does not exist yet (ENOENT) — that is expected.
+  if uv.fs_stat(target_location) then
+    uv_rename(target_location, tempfile)
+    uv_unlink(tempfile)
+  end
 
   local err = uv_copyfile(compile_location, target_location)
   a.schedule()

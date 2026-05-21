@@ -57,7 +57,6 @@ end
 -- Get a list of all available parsers
 ---@return string[]
 function M.get_available()
-  vim.api.nvim_exec_autocmds('User', { pattern = 'TSUpdate' })
   local parsers = require('nvim-treesitter.parsers')
   --- @type string[]
   local languages = vim.tbl_keys(parsers)
